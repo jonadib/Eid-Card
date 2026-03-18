@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 340 100% 97%;
+    --foreground: 340 30% 15%;
+
+    --card: 340 60% 98%;
+    --card-foreground: 340 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 30% 15%;
+
+    --primary: 330 100% 63%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 60% 85%;
+    --secondary-foreground: 270 40% 25%;
+
+    --muted: 340 40% 93%;
+    --muted-foreground: 340 15% 45%;
+
+    --accent: 20 90% 80%;
+    --accent-foreground: 20 60% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 340 40% 90%;
+    --input: 340 40% 90%;
+    --ring: 330 100% 63%;
+
+    --radius: 1rem;
+
+    --mint: 160 50% 75%;
+    --peach: 20 90% 80%;
+    --lavender: 270 60% 85%;
+    --soft-yellow: 45 90% 85%;
+    --pink-glow: 330 100% 70%;
+    --pink-deep: 330 80% 50%;
+
+    --sidebar-background: 340 60% 98%;
+    --sidebar-foreground: 340 30% 15%;
+    --sidebar-primary: 330 100% 63%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 340 40% 93%;
+    --sidebar-accent-foreground: 340 30% 15%;
+    --sidebar-border: 340 40% 90%;
+    --sidebar-ring: 330 100% 63%;
+  }
+
+  .dark {
+    --background: 330 30% 8%;
+    --foreground: 340 30% 92%;
+    --card: 330 25% 12%;
+    --card-foreground: 340 30% 92%;
+    --popover: 330 25% 12%;
+    --popover-foreground: 340 30% 92%;
+    --primary: 330 100% 63%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 30% 30%;
+    --secondary-foreground: 270 60% 85%;
+    --muted: 330 20% 18%;
+    --muted-foreground: 340 15% 60%;
+    --accent: 20 50% 35%;
+    --accent-foreground: 20 90% 80%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 330 20% 20%;
+    --input: 330 20% 20%;
+    --ring: 330 100% 63%;
+    --sidebar-background: 330 25% 10%;
+    --sidebar-foreground: 340 30% 92%;
+    --sidebar-primary: 330 100% 63%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 330 20% 18%;
+    --sidebar-accent-foreground: 340 30% 92%;
+    --sidebar-border: 330 20% 20%;
+    --sidebar-ring: 330 100% 63%;
+  }
+}
+
+@layer base {
+  /* Removed global border reset to prevent unwanted lines between sections */
+  /* * { @apply border-border; } */
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .gradient-pink {
+    background: linear-gradient(135deg, hsl(330, 100%, 63%), hsl(350, 90%, 72%), hsl(20, 90%, 80%));
+  }
+
+  .gradient-pink-dark {
+    background: linear-gradient(135deg, hsl(330, 80%, 35%), hsl(340, 70%, 25%));
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg;
+  }
+
+  /* Lighter glass card for mobile - no blur at all */
+  .glass-card-light {
+    @apply bg-card/85 border border-border/50 shadow-lg;
+  }
+
+  .glow-pink {
+    box-shadow: 0 0 40px hsl(330, 100%, 70%, 0.3), 0 0 80px hsl(330, 100%, 70%, 0.1);
+  }
+
+  .section-transition {
+    @apply transition-all duration-700 ease-in-out;
+  }
+
+  .section-highlight {
+    /* Removed scale and shadow to prevent layout shifts and gaps */
+    z-index: 20;
+  }
+
+  .text-gradient-pink {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(330, 100%, 63%), hsl(350, 80%, 65%));
+  }
+
+  .grainy {
+    position: relative;
+  }
+
+  /* Only apply grainy texture on desktop - SVG filters are expensive on mobile */
+  @media (min-width: 768px) {
+    .grainy::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes cardFall {
+    0% {
+      transform: translateY(-120px) rotate(var(--card-rotate, 0deg));
+      opacity: 1;
+    }
+
+    80% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(110vh) rotate(calc(var(--card-rotate, 0deg) + 180deg));
+      opacity: 0;
+    }
+  }
+
+  @keyframes float-paper {
+
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+
+    50% {
+      transform: translateY(-10px) rotate(-3deg);
+    }
+
+    75% {
+      transform: translateY(-25px) rotate(3deg);
+    }
+  }
+
+  @keyframes float-slow {
+
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+      transform: translateY(-15px) rotate(5deg);
+    }
+  }
+
+  @keyframes sparkle {
+
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes envelope-open {
+    0% {
+      transform: rotateX(0deg);
+    }
+
+    100% {
+      transform: rotateX(-180deg);
+    }
+  }
+
+  @keyframes card-slide-up {
+    0% {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounce-gentle {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 20px hsl(330, 100%, 70%, 0.3);
+    }
+
+    50% {
+      box-shadow: 0 0 40px hsl(330, 100%, 70%, 0.6);
+    }
+  }
+
+  .animate-float-paper {
+    animation: float-paper 6s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: float-slow 8s ease-in-out infinite;
+  }
+
+  .animate-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+  }
+
+  /* Disable continuous glow animation on mobile */
+  @media (min-width: 768px) {
+    .animate-pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+  }
+
+  .animate-card-slide-up {
+    animation: card-slide-up 0.8s ease-out forwards;
+  }
+}
